@@ -8,14 +8,31 @@ window.addEventListener('load', function(){
     console.log(ctx);
 
     class Particle{
-        constructor(){
-
-        }
+        constructor(effect, x, y, color){
+            this.effect = effect;
+            this.x = Math.random() * this.effect.canvasWidth;
+            this.y = this.effect.canvasHeight;
+            this.color = color;
+            this.originX = x;
+            this.originY = y;
+            this.size = this.effect.gap;
+            this.dx = 0;
+            this.dy = 0;
+            this.vx = 0;
+            this.vy = 0;
+            this.force = 0;
+            this.angle = 0;
+            this.distance = 0;
+            this.friction = Math.random() * 0.6 + 0.15;
+            this.ease = Math.random() * 0.1 + 0.005;
+         }
         draw(){
-
+            this.effect.context.fillStyle = this.color;
+            this.effect.context.fillRect(this.x, this.y, this.size, this.size);
         }
         update(){
-
+            this.x += (this.originX - this.x) * this.ease;
+            this.y += (this.originY - this.y) * this.ease;
         }
     }
 
@@ -26,7 +43,7 @@ window.addEventListener('load', function(){
             this.canvasHeight = canvasHeight;
             this.textX = this.canvasWidth / 2;
             this.textY = this.canvasHeight / 2;
-            this.fontSize = 100;
+            this.fontSize = 130;
             this.lineHeight = this.fontSize * 0.8;
             this.maxTextWidth = this.canvasWidth * 0.8;
             this.textInput = document.getElementById('textInput');
@@ -90,6 +107,7 @@ window.addEventListener('load', function(){
         convertToParticles(){
             this.particles = [];
             const pixels = this.context.getImageData(0, 0, this.canvasWidth, this.canvasHeight).data;
+            this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
             // console.log(pixels);
             for (let y = 0; y < this.canvasHeight; y += this.gap){
                 for (let x = 0; x < this.canvasWidth; x += this.gap){
@@ -101,90 +119,32 @@ window.addEventListener('load', function(){
                         const green = pixels[index + 1];
                         const blue = pixels[index + 2];
                         const color = 'rgb(' + red + ',' + green + ',' + blue + ')';
+                        this.particles.push(new Particle(this, x, y, color));
                         // console.log(color);
                     }
                 }
             }
+            console.log(this.particles); 
         }
         render(){
-
+            this.particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
         }
     }
 
     const effect = new Effect(ctx, canvas.width, canvas.height);
     effect.wrapText('Hello how are you');
+    effect.render();
     // console.log(effect);
 
     function animate(){
-
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        effect.render();
+        requestAnimationFrame(animate);
+        // console.log('animating');
     }
+    animate();
 
-    // ctx.lineWidth = 3;
-    // ctx.strokeStyle = 'red';
-    // ctx.beginPath();
-    // ctx.moveTo(canvas.width/2, 0);
-    // ctx.lineTo(canvas.width/2, canvas.height);
-    // ctx.stroke();
-
-    // ctx.strokeStyle = 'green';
-    // ctx.beginPath();
-    // ctx.moveTo(0, canvas.height/2);
-    // ctx.lineTo(canvas.width, canvas.height/2);
-    // ctx.stroke();
-
-    // // const text = 'Hello!!!';
-
-    // // // Centrer le texte
-    // // const textX = canvas.width / 2;
-    // // const textY = canvas.height / 2;
-    // const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    // gradient.addColorStop(0.3, 'red');
-    // gradient.addColorStop(0.5, 'fuchsia');
-    // gradient.addColorStop(0.7, 'purple');
-
-    // ctx.fillStyle = gradient;
-    // ctx.strokeStyle = 'orangered';
-    // ctx.font = '80px Helvetica';
-    // ctx.textAlign = 'center';
-    // ctx.textBaseline = 'middle';
-
-    // // // Dessiner le texte centré
-    // // ctx.fillText(text, textX, textY);
-    // // ctx.strokeText(text, textX, textY);
-
-    // const maxTextWidth = canvas.width * 0.5;
-    // const lineHeight = 80;
-
-    // function wrapText(text) {
-    //     let linesArray = [];
-    //     let lineCounter = 0;
-    //     let line = '';
-    //     let words = text.split(' ');
-    //     for (let i = 0; i < words.length; i++){
-    //         let testLine = line + words[i] + ' ';
-    //         if(ctx.measureText(testLine).width > maxTextWidth){
-    //             line = words[i] + ' ';
-    //             lineCounter++;
-    //         }else {
-    //             line = testLine;
-    //         }
-    //         linesArray[lineCounter] = line;
-    //         // console.log(ctx.measureText(testLine).width);
-    //         // ctx.fillText(testLine, canvas.width/2, canvas.height/2 + i * 80);
-    //     }
-    //     let textHeight = lineHeight + lineCounter;
-    //     let textY = canvas.height/2 - textHeight/2;
-    //     linesArray.forEach((el, index) => {
-    //         ctx.fillText(el, canvas.width/2, textY + (index * lineHeight));
-    //     });
-    //     console.log(linesArray);
-
-    // }
-
-    // // wrapText('Hello, how are you ? I\'m fine');
-    // textInput.addEventListener('keyup', function(e){
-    //     // console.log(e.target.value);
-    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //     wrapText(e.target.value);
-    // });
 });
