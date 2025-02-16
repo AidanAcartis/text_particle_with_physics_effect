@@ -1,5 +1,6 @@
 window.addEventListener('load', function(){
 
+    const textInput = document.getElementById('textInput');
     const canvas = this.document.getElementById("canvas1");
     const ctx = canvas.getContext('2d');
 
@@ -29,14 +30,7 @@ window.addEventListener('load', function(){
             this.fontSize = 100;
             this.lineHeight = this.fontSize * 0.8;
             this.maxTextWidth = this.canvasWidth * 0.8;
-            this.textInput = document.getElementById('textInput');
-            this.textInput.addEventListener('keyup', (e) =>{
-
-                if(e.key !== ' '){
-                    this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-                    this.wrapText(e.target.value);
-                }
-            });
+            
         }
         wrapText(text){
             //canvas settings
