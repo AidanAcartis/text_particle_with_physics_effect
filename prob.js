@@ -28,7 +28,7 @@ window.addEventListener('load', function(){
     // const textY = canvas.height / 2;
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
     gradient.addColorStop(0.3, 'red');
-    gradient.addColorStop(0.5, 'fuschia');
+    gradient.addColorStop(0.5, 'fuchsia');
     gradient.addColorStop(0.7, 'purple');
     ctx.fillStyle = gradient;
     ctx.strokeStyle = 'orangered';
