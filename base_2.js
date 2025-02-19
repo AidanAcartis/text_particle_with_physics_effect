@@ -58,7 +58,7 @@ window.addEventListener('load', function(){
             this.lineHeight = this.fontSize * 0.8;
             this.maxTextWidth = this.canvasWidth * 0.8;
             this.textInput = document.getElementById('textInput');
-            this.verticalOffset = -50;
+            this.verticalOffset = 10;
             this.textInput.addEventListener('keyup', (e) =>{
 
                 if(e.key !== ' '){
@@ -93,7 +93,7 @@ window.addEventListener('load', function(){
             this.context.lineWidth = 3;
             this.context.strokeStyle = 'white';
             this.context.letterSpacing = '5px';
-            this.context.font = this.fontSize + 'px Helvetica';
+            this.context.font = this.fontSize + 'px "Permanent Marker", serif';
             //break multiline text 
             let linesArray = [];
             let lineCounter = 0;
@@ -148,7 +148,7 @@ window.addEventListener('load', function(){
     }
 
     const effect = new Effect(ctx, canvas.width, canvas.height);
-    effect.wrapText('Hello how are you');
+    effect.wrapText('stress reality frustration outside social public interaction noise ');
     effect.render();
     // console.log(effect);
 
